@@ -205,7 +205,7 @@
 # )
 
 
-# メモ化を使用しない関数（問4の例）
+# メモ化を使用しない関数
 def kaerukana_no_memo(n):
     if n == 0:
         return True, 1  # 呼び出し回数1を返す
@@ -220,7 +220,7 @@ def kaerukana_no_memo(n):
     return (result1 or result2 or result3), count1 + count2 + count3 + 1
 
 
-# メモ化を使用した関数（問4の例）
+# メモ化を使用した関数
 def kaerukana_with_memo(n, memo=None):
     if memo is None:
         memo = {}
