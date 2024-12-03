@@ -117,26 +117,25 @@ dfC["地点"] = "東京"
 
 
 # 各地点の気温の相関係数
-# dfA["日付"] = pd.to_datetime(dfA["日付"])
-# dfB["日付"] = pd.to_datetime(dfB["日付"])
-# dfC["日付"] = pd.to_datetime(dfC["日付"])
+dfA["DateTime"] = pd.to_datetime(dfA["DateTime"])
+dfB["DateTime"] = pd.to_datetime(dfB["DateTime"])
+dfC["DateTime"] = pd.to_datetime(dfC["DateTime"])
 
+combined_temp_data = dfA.merge(dfB, dfC, on="DateTime")
+# print(df2)
+# print("列名一覧:", df2.columns)
+temp_correlation_okinawa = df2.loc[df2["地点"] == "沖縄", "気温(℃)"]
+temp_correlation_osaka = df2.loc[df2["地点"] == "大阪", "気温(℃)"]
+temp_correlation_tokyo = df2.loc[df2["地点"] == "東京", "気温(℃)"]
 
-df2 = pd.concat([dfA, dfB, dfC], axis=1)
-print(df2)
+combination_df = pd.DataFrame(
+    {
+        "沖縄": temp_correlation_okinawa,
+        "大阪": temp_correlation_osaka,
+        "東京": temp_correlation_tokyo,
+    }
+)
 
-# temp_correlation_okinawa = df2.loc[df2["地点"] == "沖縄", "気温(℃)"]
-# temp_correlation_osaka = df2.loc[df2["地点"] == "大阪", "気温(℃)"]
-# temp_correlation_tokyo = df2.loc[df2["地点"] == "東京", "気温(℃)"]
-
-# combination_df = pd.DataFrame(
-#     {
-#         "沖縄": temp_correlation_okinawa,
-#         "大阪": temp_correlation_osaka,
-#         "東京": temp_correlation_tokyo,
-#     }
-# )
-
-# print(temp_correlation_okinawa)
-# print(temp_correlation_osaka)
-# print(temp_correlation_tokyo)
+print(temp_correlation_okinawa)
+print(temp_correlation_osaka)
+print(temp_correlation_tokyo)
