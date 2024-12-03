@@ -1,1 +1,1 @@
-df1.columns = df1.columns.str.strip()
+print(combined_data)

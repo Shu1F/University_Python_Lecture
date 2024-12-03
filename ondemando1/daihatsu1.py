@@ -20,9 +20,9 @@ dfA = pd.read_csv(os.path.join(base_path, "okinawa.csv"))
 dfB = pd.read_csv(os.path.join(base_path, "osaka.csv"))
 dfC = pd.read_csv(os.path.join(base_path, "tokyo.csv"))
 
-dfA["地点"] = "沖縄"
-dfB["地点"] = "大阪"
-dfC["地点"] = "東京"
+# dfA["地点"] = "沖縄"
+# dfB["地点"] = "大阪"
+# dfC["地点"] = "東京"
 
 
 # print(dfA)
@@ -121,21 +121,55 @@ dfA["DateTime"] = pd.to_datetime(dfA["DateTime"])
 dfB["DateTime"] = pd.to_datetime(dfB["DateTime"])
 dfC["DateTime"] = pd.to_datetime(dfC["DateTime"])
 
-combined_temp_data = dfA.merge(dfB, dfC, on="DateTime")
-# print(df2)
-# print("列名一覧:", df2.columns)
-temp_correlation_okinawa = df2.loc[df2["地点"] == "沖縄", "気温(℃)"]
-temp_correlation_osaka = df2.loc[df2["地点"] == "大阪", "気温(℃)"]
-temp_correlation_tokyo = df2.loc[df2["地点"] == "東京", "気温(℃)"]
+dfA.set_index("DateTime", inplace=True)
+dfB.set_index("DateTime", inplace=True)
+dfC.set_index("DateTime", inplace=True)
 
-combination_df = pd.DataFrame(
-    {
-        "沖縄": temp_correlation_okinawa,
-        "大阪": temp_correlation_osaka,
-        "東京": temp_correlation_tokyo,
-    }
+dfA.rename(columns=lambda x: f"{x}：沖縄", inplace=True)
+dfB.rename(columns=lambda x: f"{x}：大阪", inplace=True)
+dfC.rename(columns=lambda x: f"{x}：東京", inplace=True)
+
+df2 = pd.concat([dfA, dfB, dfC], axis=1)
+
+# correlation_temp_data = df2[["気温(℃)：沖縄", "気温(℃)：大阪", "気温(℃)：東京"]].corr()
+# print(correlation_temp_data)
+# plt.figure(figsize=(8, 6))
+# sns.heatmap(correlation_temp_data, annot=True, fmt=".2f", cmap="coolwarm")
+# plt.title("東京・大阪・沖縄の気温の相関係数")
+# plt.show()
+
+# 散布図
+plt.figure(figsize=(8, 6))
+plt.scatter(
+    df2["現地気圧(hPa)：沖縄"], df2["降水量(mm)：沖縄"], label="沖縄", alpha=0.7
+)
+plt.scatter(
+    df2["現地気圧(hPa)：大阪"], df2["降水量(mm)：大阪"], label="大阪", alpha=0.7
+)
+plt.scatter(
+    df2["現地気圧(hPa)：東京"], df2["降水量(mm)：東京"], label="東京", alpha=0.7
 )
 
-print(temp_correlation_okinawa)
-print(temp_correlation_osaka)
-print(temp_correlation_tokyo)
+plt.xlabel("気圧 (hPa)", fontsize=12)
+plt.ylabel("降水量 (mm)", fontsize=12)
+plt.title("降水量と気圧の散布図", fontsize=14)
+plt.legend(fontsize=10)
+plt.grid(True)
+
+plt.show()
+
+# 時系列図
+july_data = df2[df2.index.month == 7]
+
+plt.figure(figsize=(10, 6))
+plt.plot(july_data.index, july_data["気温(℃)：沖縄"], label="沖縄", linewidth=1.5)
+plt.plot(july_data.index, july_data["気温(℃)：大阪"], label="大阪", linewidth=1.5)
+plt.plot(july_data.index, july_data["気温(℃)：東京"], label="東京", linewidth=1.5)
+
+plt.xlabel("日時", fontsize=12)
+plt.ylabel("気温 (℃)", fontsize=12)
+plt.title("地点別7月の気温の時系列図", fontsize=14)
+plt.legend(fontsize=10)
+plt.grid(True)
+
+plt.show()
