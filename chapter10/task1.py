@@ -14,3 +14,18 @@ class intDict(object):
                 hashBucket[i] = (key, dictVal)
                 return
         hashBucket.append((key, dictVal))
+
+    def getValue(self, key):
+        hashBucket = self.buckets[key % self.numBuckets]
+        for e in hashBucket:
+            if e[0] == key:
+                return e[1]
+        return None
+
+
+def __str__(self):
+    result = "{"
+    for b in self.buckets:
+        for e in b:
+            result = result + str(e[0]) + ":" + str(e[1]) + ","
+    return result[:-1] + "}"
