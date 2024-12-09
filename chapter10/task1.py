@@ -1,3 +1,6 @@
+import random
+
+
 class intDict(object):
 
     def __init__(self, numBuckets):
@@ -29,3 +32,14 @@ def __str__(self):
         for e in b:
             result = result + str(e[0]) + ":" + str(e[1]) + ","
     return result[:-1] + "}"
+
+
+D = intDict(20)
+for i in range(20):
+    key = random.choice(range(10**5))
+    D.addEntry(key, i)
+print("The value of the intDict is :")
+print(D)
+print("\n", "The buckets are :")
+for hashBuket in D.buckets:
+    print("  ", hashBuket)

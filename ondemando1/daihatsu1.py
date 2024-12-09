@@ -8,17 +8,17 @@
 # print(type(path))
 # # <class 'str'>
 
-import pandas as pd
-import datetime as dt
-import os
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
+# import pandas as pd
+# import datetime as dt
+# import os
+# import seaborn as sns
+# import matplotlib.pyplot as plt
+# import numpy as np
 
-base_path = "C:/Users/fs203/OneDrive/University_Python_Lecture/ondemando1"
-dfA = pd.read_csv(os.path.join(base_path, "okinawa.csv"))
-dfB = pd.read_csv(os.path.join(base_path, "osaka.csv"))
-dfC = pd.read_csv(os.path.join(base_path, "tokyo.csv"))
+# base_path = "C:/Users/fs203/OneDrive/University_Python_Lecture/ondemando1"
+# dfA = pd.read_csv(os.path.join(base_path, "okinawa.csv"))
+# dfB = pd.read_csv(os.path.join(base_path, "osaka.csv"))
+# dfC = pd.read_csv(os.path.join(base_path, "tokyo.csv"))
 
 # dfA["地点"] = "沖縄"
 # dfB["地点"] = "大阪"
@@ -103,18 +103,26 @@ dfC = pd.read_csv(os.path.join(base_path, "tokyo.csv"))
 # )
 
 
+import pandas as pd
+import datetime as dt
+import os
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+base_path = "C:/Users/fs203/OneDrive/University_Python_Lecture/ondemando1"
+dfA = pd.read_csv(os.path.join(base_path, "okinawa.csv"))
+dfB = pd.read_csv(os.path.join(base_path, "osaka.csv"))
+dfC = pd.read_csv(os.path.join(base_path, "tokyo.csv"))
 # 相関係数
-# df1 = pd.concat([dfA, dfB, dfC], axis=0)
-# # print("列名一覧:", df1.columns)
-# # df1.columns = df1.columns.str.strip()
+df1 = pd.concat([dfA, dfB, dfC], axis=0)
+# print("列名一覧:", df1.columns)
+# df1.columns = df1.columns.str.strip()
 
-# # print(df1)
+# print(df1)
 
-# data_Correlation = df1[["降水量(mm)", "現地気圧(hPa)"]].corr().iloc[0, 1]
+data_Correlation = df1[["降水量(mm)", "現地気圧(hPa)"]].corr().iloc[0, 1]
 
-
-# print("降水量と気圧の相関係数：", data_Correlation)
-
+print("降水量と気圧の相関係数：", data_Correlation)
 
 # 各地点の気温の相関係数
 dfA["DateTime"] = pd.to_datetime(dfA["DateTime"])
@@ -131,12 +139,12 @@ dfC.rename(columns=lambda x: f"{x}：東京", inplace=True)
 
 df2 = pd.concat([dfA, dfB, dfC], axis=1)
 
-# correlation_temp_data = df2[["気温(℃)：沖縄", "気温(℃)：大阪", "気温(℃)：東京"]].corr()
-# print(correlation_temp_data)
-# plt.figure(figsize=(8, 6))
-# sns.heatmap(correlation_temp_data, annot=True, fmt=".2f", cmap="coolwarm")
-# plt.title("東京・大阪・沖縄の気温の相関係数")
-# plt.show()
+correlation_temp_data = df2[["気温(℃)：沖縄", "気温(℃)：大阪", "気温(℃)：東京"]].corr()
+print(correlation_temp_data)
+plt.figure(figsize=(8, 6))
+sns.heatmap(correlation_temp_data, annot=True, fmt=".2f", cmap="coolwarm")
+plt.title("東京・大阪・沖縄の気温の相関係数")
+plt.show()
 
 # 散布図
 plt.figure(figsize=(8, 6))
