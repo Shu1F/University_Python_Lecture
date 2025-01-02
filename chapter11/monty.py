@@ -1,52 +1,87 @@
-# -*- coding: utf-8 -*-
 import random
 import matplotlib.pyplot as plt
-def Monty(max, step):   #最大数、ステップ数を受け取る
-	ncWinp = []       # no-changeで勝った回数記録
-	cWinp = []        # change で勝った回数記録
-	n = range(10,max,step)   #n回プレイする。nは10からmaxまで
-	for numPlay in n:
-		ncWin = 0
-		cWin = 0
-		for i in range(0,numPlay):
-			if NoChange() == "new_car":#no-change 当たったら
-				ncWin += 1              #1増やす
-							#Changeの場合も同様にあたったらカウンタを１増やす
 
-		ncWinp.append(ncWin/numPlay)  #勝率をリストに追加、Changeの場合も同様に
 
-	plt.figure()                            #以下はグラフプロット。必要に応じて調整する。
-	plt.plot(n,cWinp,"b")
-	plt.plot(n,ncWinp,"r")
-	plt.title("Winning Ratio")
-	plt.xlabel("Number of Trial"),plt.ylabel("Winning Ratio")
-	plt.ylim(0.0,1.0)
-	plt.legend(("Change","No-Change"),loc="best")
-	plt.show()
-    
-def NoChange():
-	CARis = random.choice(["A","B","C"])  #正解をランダムに選んでおく
-	PlayerChoice = random.choice(["A","B","C"]) #選択したのはこれ
-	if PlayerChoice == CARis:      #正解＝選択　一致してたら
-		return "new_car"
-	else:
-		return "goat"
-    
-def DoChange():
-	CARis = random.choice(["A","B","C"])     #正解をランダムに選んでおく
-	PlayerFirstChoice = random.choice(["A","B","C"])  #選択したのはこれ
+def simulate_monty_hall(max_trials, step):
+    """
+    Simulate the Monty Hall problem using Monte Carlo method.
 
-#ここまではNoChangeと同じ　以下、Changeの場合を記述しよう
+    Parameters:
+    - max_trials: int, maximum number of trials
+    - step: int, step size for the number of trials
 
-#　MontyChoice のドアを決定して開ける
+    Displays:
+    - A plot of winning ratios for "change" and "no-change" strategies.
+    """
+    nc_win_ratios = []  # No-change winning ratios
+    c_win_ratios = []  # Change winning ratios
+    num_trials = range(10, max_trials + 1, step)  # Trial ranges
 
-#　Player2ndChoice = door  #これを変更後の選択とする
-#結果の返し方もNoChangeの場合と同じにしておく
+    for trials in num_trials:
+        nc_wins = 0
+        c_wins = 0
 
-	if Player2ndChoice == CARis:
-		return "new_car"
-	else:
-		return "goat"
-	
-Monty(N, m)   #最大 N 回まで。m回刻みで実行。N, mは適宜変更してみること。
+        for _ in range(trials):
+            if no_change_strategy() == "win":
+                nc_wins += 1
+            if change_strategy() == "win":
+                c_wins += 1
 
+        nc_win_ratios.append(nc_wins / trials)
+        c_win_ratios.append(c_wins / trials)
+
+    # Plot results
+    plt.figure()
+    plt.plot(num_trials, c_win_ratios, "b", label="Change")
+    plt.plot(num_trials, nc_win_ratios, "r", label="No-Change")
+    plt.title("Winning Ratio")
+    plt.xlabel("Number of Trials")
+    plt.ylabel("Winning Ratio")
+    plt.ylim(0.0, 1.0)
+    plt.legend(loc="best")
+    plt.show()
+
+
+def no_change_strategy():
+    """Simulate the no-change strategy in the Monty Hall problem."""
+    car_position = random.choice(["A", "B", "C"])
+    player_choice = random.choice(["A", "B", "C"])
+
+    if player_choice == car_position:
+        return "win"
+    else:
+        return "lose"
+
+
+def change_strategy():
+    """Simulate the change strategy in the Monty Hall problem."""
+    car_position = random.choice(["A", "B", "C"])
+    player_choice = random.choice(["A", "B", "C"])
+
+    # Monty opens a goat door
+    remaining_doors = [
+        door
+        for door in ["A", "B", "C"]
+        if door != player_choice and door != car_position
+    ]
+    monty_choice = random.choice(remaining_doors)
+
+    # Player changes their choice
+    player_second_choice = [
+        door
+        for door in ["A", "B", "C"]
+        if door != player_choice and door != monty_choice
+    ][0]
+
+    if player_second_choice == car_position:
+        return "win"
+    else:
+        return "lose"
+
+
+# Parameters
+max_trials = 1000  # Maximum number of trials
+step = 50  # Step size for trials
+
+# Run the simulation
+simulate_monty_hall(max_trials, step)
