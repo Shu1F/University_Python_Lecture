@@ -109,13 +109,41 @@ import matplotlib.pyplot as plt
 # plt.show()
 
 
-def isIn(str1, str2):
-    if str1 in str2 or str2 in str1:
-        return True
-    else:
-        return False
+# def isIn(str1, str2):
+#     if str1 in str2 or str2 in str1:
+#         return True
+#     else:
+#         return False
 
 
 # 使用例
-print(isIn("sleep", "eep"))  # True
+# print(isIn("sleep", "eep"))  # True
 # print(isIn("hello", "world"))  # False
+
+
+# def printName(firstName, lastName, reverse):
+#     if reverse:
+#         print(lastName + ", " + firstName)
+#     else:
+#         print(firstName, lastName)
+
+
+# printName("阿邊", "拓真", False)
+# printName("鈴木", "陽希", reverse=False)
+# printName("菊池", lastName="翔吾", reverse=False)
+# printName(lastName="秀一", firstName="藤池", reverse=False)
+
+
+def f(x):
+    y = 1
+    x = x + y
+    print("x =", x)
+    return x
+
+
+x = 3
+y = 2
+z = f(x)
+print("z =", z)
+print("x =", x)
+print("y =", y)
