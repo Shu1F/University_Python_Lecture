@@ -1,1 +1,0 @@
-print(isIn("hello", "world"))  # False
